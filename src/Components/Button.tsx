@@ -1,4 +1,3 @@
-import { ButtonNameType } from "../App"
 
 type PropsType = {
     name: string
