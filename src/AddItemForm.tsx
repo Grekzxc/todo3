@@ -1,5 +1,7 @@
+import { IconButton, TextField } from "@mui/material";
 import React, { ChangeEvent, useState } from "react";
-import { Button } from "./Components/Button";
+import AddBoxIcon from '@mui/icons-material/AddBox';
+
 
 type AddItemFormType = {
     addItem: (newTitle: string) => void
@@ -31,19 +33,22 @@ export const AddItemForm = (props: AddItemFormType) => {
     const userEmptyError = error && <p style={{ color: 'red' }}>Enter task title!</p>
 
     return (
-        <div>
-            <input
+        <>
+            <TextField
+                size="small"
+                sx={{ mr: 0 }}
                 value={newTitle}
                 className={error ? 'input-error' : undefined}
                 onKeyPress={handleKeyPress}
                 onChange={onChangeInputHandler}
                 placeholder="Please, start typing"
             />
-            <Button
-                name={'+'}
-                callBack={onClickButtonHandler}
-            />
+            <IconButton
+                size="small"
+                onClick={onClickButtonHandler}>
+                <AddBoxIcon />
+            </IconButton>
             {userEmptyError}
-        </div>
+        </>
     )
 }

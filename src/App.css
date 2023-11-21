@@ -1,11 +1,11 @@
-.App {
+/* .App {
   padding: 30px;
   display: flex;
 }
 
 .App>div {
   margin-right: 50px;
-}
+} */
 
 .task {
   font-weight: bold;
@@ -27,3 +27,8 @@
   border: 3px solid rgb(201, 80, 80);
   outline: none;
 }
+
+/* .btn_filter_container {
+  display: flex;
+  justify-content: space-between;
+} */

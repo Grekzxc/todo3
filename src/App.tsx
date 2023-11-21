@@ -3,9 +3,10 @@ import './App.css';
 import { TasksType, Todolist } from './Todolist';
 import { v1 } from 'uuid';
 import { AddItemForm } from './AddItemForm';
+import { AppBar, Box, Button, Container, CssBaseline, Grid, IconButton, Paper, ThemeProvider, Toolbar, Typography, createTheme } from '@mui/material';
+import { Menu } from '@mui/icons-material';
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
-
 export type TodolistType = {
     todoListTitle: string
     filter: FilterValuesType
@@ -19,6 +20,7 @@ function App(): JSX.Element {
 
     const todoListId_1 = crypto.randomUUID()
     const todoListId_2 = crypto.randomUUID()
+    const [isDarkMode, setisDarkMode] = useState<boolean>(true)
 
     const [todoList, setTodoList] = useState<Array<TodolistType>>([
         { todoListId: todoListId_1, todoListTitle: 'What to learn', filter: 'All' },
@@ -81,7 +83,6 @@ function App(): JSX.Element {
         })
     }
 
-
     const addTodolist = (newTitle: string) => {
         const newTodoId = v1()
         const newTodo: TodolistType = { todoListId: newTodoId, todoListTitle: newTitle, filter: 'All' }
@@ -98,8 +99,6 @@ function App(): JSX.Element {
         setTodoList(todoList.filter(tl => tl.todoListId !== todoListId))
         delete tasks[todoListId]
     }
-
-
     const getTasksForRender = (allTasks: Array<TasksType>, nextFilter: FilterValuesType) => {
         switch (nextFilter) {
             case 'Active':
@@ -110,31 +109,85 @@ function App(): JSX.Element {
         }
     }
 
+    const mode = isDarkMode ? 'dark' : 'light'
+    const toggleTheme = () => setisDarkMode(!isDarkMode)
+    const customTheme = createTheme({
+        palette: {
+            primary: {
+                main: '#212121',
+            },
+            secondary: {
+                main: '#b388ff',
+            },
+            mode: mode
+        }
+    })
+
     const todoListsComponents: Array<JSX.Element> = todoList.map(tl => {
         const tasksForRender = getTasksForRender(tasks[tl.todoListId], tl.filter)
 
         return (
-            <Todolist
-                key={tl.todoListId}
-                todoListId={tl.todoListId}
-                filter={tl.filter}
-                title={tl.todoListTitle}
-                tasks={tasksForRender}
-                removeTask={removeTask}
-                changeTodolistFilter={changeTodolistFilter}
-                addTask={addTask}
-                changeTaskStatus={changeTaskStatus}
-                removeTodoList={removeTodoList}
-                changeTaskTitle={changeTaskTitle}
-                changeTodolistTitle={changeTodolistTitle}
-            />
+            <Grid item key={tl.todoListId}>
+                <Paper
+                    elevation={10}
+                    sx={{ p: '15px' }}>
+                    <Todolist
+                        todoListId={tl.todoListId}
+                        filter={tl.filter}
+                        title={tl.todoListTitle}
+                        tasks={tasksForRender}
+                        removeTask={removeTask}
+                        changeTodolistFilter={changeTodolistFilter}
+                        addTask={addTask}
+                        changeTaskStatus={changeTaskStatus}
+                        removeTodoList={removeTodoList}
+                        changeTaskTitle={changeTaskTitle}
+                        changeTodolistTitle={changeTodolistTitle}
+                    />
+                </Paper>
+            </Grid>
         )
     })
+
     return (
-        <div className="App">
-            <AddItemForm addItem={addTodolist} />
-            {todoListsComponents}
-        </div>
+        <ThemeProvider theme={customTheme}>
+            <CssBaseline />
+            <div className="App">
+                <AppBar position='static'>
+                    <Toolbar
+                        sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <IconButton color='inherit'>
+                            <Menu />
+                        </IconButton>
+                        <Typography variant='h5'>Todolist</Typography>
+                        <Box>
+                            <Button
+                                color='inherit'
+                                variant={'outlined'}
+                                onClick={toggleTheme}
+                            >
+                                {mode}
+                            </Button>
+                            <Button
+                                color='inherit'
+                                variant={'outlined'}>
+                                LogOut
+                            </Button>
+                        </Box>
+                    </Toolbar>
+                </AppBar>
+                <Container >
+                    <Grid
+                        sx={{ p: '15px', justifyContent: 'center', alignItems: 'center' }}
+                        container >
+                        <AddItemForm addItem={addTodolist} />
+                    </Grid>
+                    <Grid container spacing={3}>
+                        {todoListsComponents}
+                    </Grid>
+                </Container>
+            </div>
+        </ThemeProvider>
     );
 }
 export default App;

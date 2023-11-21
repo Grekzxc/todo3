@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import React, { ChangeEvent, FC, useState } from "react";
 
 type EditableSpanType = {
@@ -22,7 +23,10 @@ export const EditableSpan: FC<EditableSpanType> = (props) => {
     return (
         editMode
             ?
-            <input
+            <TextField
+                id="standard-basic"
+                label="Standard"
+                variant="standard"
                 value={title}
                 autoFocus
                 onBlur={offEditMode}
