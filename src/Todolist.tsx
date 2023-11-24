@@ -14,35 +14,35 @@ export type TasksType = {
     isDone: boolean
 }
 export type TodolistPropsType = {
-    todoListId: string
+    todolistId: string
     filter: FilterValuesType
     title: string
     tasks: TasksType[]
-    changeTodolistFilter: (nextFilter: FilterValuesType, todoListId: string) => void
-    removeTask: (id: string, todoListId: string) => void
-    addTask: (taskTitle: string, todoListId: string) => void
-    changeTaskStatus: (taskId: string, newIsDoneValue: boolean, todoListId: string) => void
-    removeTodoList: (todoListId: string) => void
-    changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
-    changeTodolistTitle: (newTodolistTitle: string, todoListId: string) => void
+    changeTodolistFilter: (nextFilter: FilterValuesType, todolistId: string) => void
+    removeTask: (id: string, todolistId: string) => void
+    addTask: (taskTitle: string, todolistId: string) => void
+    changeTaskStatus: (taskId: string, newIsDoneValue: boolean, todolistId: string) => void
+    removeTodoList: (todolistId: string) => void
+    changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+    changeTodolistTitle: (newTodolistTitle: string, todolistId: string) => void
 }
 
 export const Todolist: React.FC<TodolistPropsType> = (props: TodolistPropsType) => {
 
-    const addTaskTitle = (newTitle: string) => props.addTask(newTitle, props.todoListId)
-    const onClickRemoveTodolistHandler = () => props.removeTodoList(props.todoListId)
+    const addTaskTitle = (newTitle: string) => props.addTask(newTitle, props.todolistId)
+    const onClickRemoveTodolistHandler = () => props.removeTodoList(props.todolistId)
 
     const changeFilterHandlerCreator = (FilterValue: FilterValuesType) =>
-        () => props.changeTodolistFilter(FilterValue, props.todoListId)
+        () => props.changeTodolistFilter(FilterValue, props.todolistId)
 
     const tasksList: Array<JSX.Element> = props.tasks.map((t: TasksType) => {
-        const removeTaskHandler = () => props.removeTask(t.id, props.todoListId)
+        const removeTaskHandler = () => props.removeTask(t.id, props.todolistId)
         const onChangeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) =>
-            props.changeTaskStatus(t.id, e.currentTarget.checked, props.todoListId)
+            props.changeTaskStatus(t.id, e.currentTarget.checked, props.todolistId)
         const taskClass = t.isDone ? 'task-isDone' : 'task'
 
         const changeTaskTitle = (title: string) => {
-            props.changeTaskTitle(props.todoListId, t.id, title)
+            props.changeTaskTitle(props.todolistId, t.id, title)
         }
 
         return (
@@ -70,7 +70,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props: TodolistPropsType) 
         ? <List>{tasksList}</List> : <span>Your tasks list is empty</span>
 
     const changeTodoTitle = (newTitle: string) => {
-        props.changeTodolistTitle(props.todoListId, newTitle)
+        props.changeTodolistTitle(props.todolistId, newTitle)
     }
 
     return (
