@@ -32,30 +32,28 @@ export type ActionType =
     ChangeTodolistTitleTypeAT |
     ChangeTodolistFilterTypeAT
 
-export const todolistsReducer = (todolists: Array<TodolistType>, action: ActionType): Array<TodolistType> => {
+export const todolistsReducer = (state: Array<TodolistType>, action: ActionType): Array<TodolistType> => {
     switch (action.type) {
         case 'REMOVE_TODOLIST':
-            return todolists.filter(tl => tl.todolistId !== action.todolistId)
+            return state.filter(tl => tl.todolistId !== action.todolistId)
         case 'ADD_TODOLIST':
-            const newTodo: TodolistType = { todolistId: action.todolistId, todolistTitle: action.newTitle, filter: 'All' }
-            return [...todolists, newTodo]
+            // const newTodo: TodolistType = { todolistId: action.todolistId, todolistTitle: action.newTitle, filter: 'All' }
+            return [...state, { todolistId: action.todolistId, todolistTitle: action.newTitle, filter: 'All' }]
         case 'CHANGE_TODOLIST_TITLE':
-            return todolists.map(tl => tl.todolistId === action.todolistId ?
+            return state.map(tl => tl.todolistId === action.todolistId ?
                 { ...tl, todolistTitle: action.newTodolistTitle } : tl)
         case 'CHANGE_TODOLIST_FILTER':
-            return todolists.map(tl => tl.todolistId === action.todolistId ? { ...tl, filter: action.nextFilter } : tl)
+            return state.map(tl => tl.todolistId === action.todolistId ? { ...tl, filter: action.nextFilter } : tl)
         default:
-            return (
-                todolists
-            )
+            throw new Error('I don`t understand this type')
     }
 }
 
 export const RemoveTodolistAC = (todolistId: string): RemoveTodolistAT => ({
     type: "REMOVE_TODOLIST", todolistId
 })
-export const AddTodolistAC = (newTitle: string, todolistId: string): AddTodolistAT => ({
-    type: "ADD_TODOLIST", todolistId, newTitle
+export const AddTodolistAC = (newTitle: string): AddTodolistAT => ({
+    type: "ADD_TODOLIST", newTitle, todolistId: v1()
 })
 export const ChangeTodolistTitleTypeAC = (newTodolistTitle: string, todolistId: string): ChangeTodolistTitleTypeAT => ({
     type: 'CHANGE_TODOLIST_TITLE', newTodolistTitle, todolistId
