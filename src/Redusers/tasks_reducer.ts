@@ -1,5 +1,5 @@
 import { v1 } from "uuid"
-import { FilterValuesType, TaskStateType } from "../App"
+import { TaskStateType } from "../App"
 import { AddTodolistAT, RemoveTodolistAT } from "./todolists_reducer"
 
 // 1.Исходный стэйт
@@ -29,7 +29,7 @@ export type ChangeTaskStatusTypeAT = {
     newIsDoneValue: boolean
     todolistId: string
 }
-export type ActionType =
+export type ActionTasksType =
     RemoveTasksAT |
     AddTasksAT |
     ChangeTasksTitleTypeAT |
@@ -48,7 +48,9 @@ export type ActionType =
 // export type ChangeTasksTitleActionType = ReturnType<typeof ChangeTasksTitleAC>
 // export type ChangeTasksStatusActionType = ReturnType<typeof ChangeTasksStatusAC>
 
-export const tasksReducer = (state: TaskStateType, action: ActionType): TaskStateType => {
+const initialState: TaskStateType = {}
+
+export const tasksReducer = (state = initialState, action: ActionTasksType): TaskStateType => {
     switch (action.type) {
         case 'REMOVE_TASKS':
             return { ...state, [action.todolistId]: state[action.todolistId].filter(t => t.id !== action.id) }
